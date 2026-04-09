@@ -14,7 +14,6 @@ public class Game1 : Game
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
-        Test testObject = new Test();
     }
 
     protected override void Initialize()
@@ -22,6 +21,7 @@ public class Game1 : Game
         // TODO: Add your initialization logic here
 
         base.Initialize();
+        Test testObject = new Test();
     }
 
     protected override void LoadContent()
