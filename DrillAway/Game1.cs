@@ -8,12 +8,16 @@ public class Game1 : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
+    private Texture2D armoDrillo;
 
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
+        Window.IsBorderless = false;
+        Window.AllowUserResizing = true;
+        Window.AllowAltF4 = true;
     }
 
     protected override void Initialize()
@@ -27,6 +31,7 @@ public class Game1 : Game
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
+        armoDrillo = Content.Load<Texture2D>("images/ArmoDrillo");
 
         // TODO: use this.Content to load your game content here
     }
@@ -46,6 +51,17 @@ public class Game1 : Game
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
         // TODO: Add your drawing code here
+
+        //for sprite renders always start the batch
+        _spriteBatch.Begin();
+
+
+
+        _spriteBatch.Draw(armoDrillo,new Rectangle(0,0,Window.ClientBounds.Width,Window.ClientBounds.Height),Color.White);
+
+
+        //after sprites are rendered end the batch
+        _spriteBatch.End();
 
         base.Draw(gameTime);
     }
