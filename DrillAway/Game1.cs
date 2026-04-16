@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Security.Cryptography.X509Certificates;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -9,7 +10,7 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private Texture2D armoDrillo;
-
+    Player player;
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -18,6 +19,7 @@ public class Game1 : Game
         Window.IsBorderless = false;
         Window.AllowUserResizing = true;
         Window.AllowAltF4 = true;
+        
     }
 
     protected override void Initialize()
@@ -26,6 +28,7 @@ public class Game1 : Game
 
         base.Initialize();
         Test testObject = new Test();
+        player = new Player(armoDrillo);
     }
 
     protected override void LoadContent()
@@ -57,7 +60,7 @@ public class Game1 : Game
 
 
 
-        _spriteBatch.Draw(armoDrillo,new Rectangle(0,0,Window.ClientBounds.Width,Window.ClientBounds.Height),Color.White);
+        player.Draw(_spriteBatch);
 
 
         //after sprites are rendered end the batch
