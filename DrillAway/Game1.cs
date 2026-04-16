@@ -1,7 +1,5 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace DrillAway;
 
@@ -20,7 +18,6 @@ public class Game1 : Game
         Window.IsBorderless = false;
         Window.AllowUserResizing = true;
         Window.AllowAltF4 = true;
-        
     }
 
     protected override void Initialize()
@@ -30,7 +27,7 @@ public class Game1 : Game
         base.Initialize();
         player = new Player(armoDrillo);
         input = new InputManager();
-        Test testObject = new Test(input);
+        Test testObject = new Test(input,this);
     }
 
     protected override void LoadContent()
@@ -44,9 +41,6 @@ public class Game1 : Game
     protected override void Update(GameTime gameTime)
     {
         input.InputCheck();
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            Exit();
-
         // TODO: Add your update logic here
 
         base.Update(gameTime);
