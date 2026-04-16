@@ -11,6 +11,7 @@ public class Game1 : Game
     private SpriteBatch _spriteBatch;
     private Texture2D armoDrillo;
     Player player;
+    InputManager input;
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -27,8 +28,9 @@ public class Game1 : Game
         // TODO: Add your initialization logic here
 
         base.Initialize();
-        Test testObject = new Test();
         player = new Player(armoDrillo);
+        input = new InputManager();
+        Test testObject = new Test(input);
     }
 
     protected override void LoadContent()
@@ -41,6 +43,7 @@ public class Game1 : Game
 
     protected override void Update(GameTime gameTime)
     {
+        input.InputCheck();
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
