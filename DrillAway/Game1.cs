@@ -10,6 +10,7 @@ public class Game1 : Game
     private Texture2D armoDrillo;
     Player player;
     InputManager input;
+    MapGenerator mapGenerator = new MapGenerator();
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -28,6 +29,7 @@ public class Game1 : Game
         player = new Player(armoDrillo);
         input = new InputManager();
         Test testObject = new Test(input,this);
+        mapGenerator.MatrixGen();
     }
 
     protected override void LoadContent()
@@ -55,9 +57,11 @@ public class Game1 : Game
         //for sprite renders always start the batch
         _spriteBatch.Begin();
 
-
+        // Sectıon 1
 
         player.Draw(_spriteBatch);
+
+        // Sectıon 2
 
 
         //after sprites are rendered end the batch
