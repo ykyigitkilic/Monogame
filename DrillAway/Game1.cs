@@ -29,7 +29,7 @@ public class Game1 : Game
         player = new Player(armoDrillo);
         input = new InputManager();
         Test testObject = new Test(input,this);
-        mapGenerator.MatrixGen();
+        mapGenerator.BGGen();
     }
 
     protected override void LoadContent()

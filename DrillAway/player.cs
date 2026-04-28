@@ -17,8 +17,8 @@ class Player
         sp.Draw(texture,new Rectangle(
             posX,
             posY,
-            texture.Bounds.Width/8,
-            texture.Bounds.Width/8),
+            texture.Bounds.Width/10,
+            texture.Bounds.Width/10),
             Color.White);
     }
     

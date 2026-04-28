@@ -5,10 +5,10 @@ class MapGenerator
 {
     Random random = new Random();
 
-    int tileWidth =5;
-    int tileHeight=5;
+    int tileWidth =10;
+    int tileHeight=10;
 
-    public void MatrixGen()
+    public void BGGen()
     {
         for(int i =0;i<tileHeight;i++)
         {
