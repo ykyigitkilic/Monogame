@@ -8,6 +8,7 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private Texture2D armoDrillo;
+    Test testObject;
     Player player;
     InputManager input;
     MapGenerator mapGenerator = new MapGenerator();
@@ -28,7 +29,7 @@ public class Game1 : Game
         base.Initialize();
         player = new Player(armoDrillo);
         input = new InputManager();
-        Test testObject = new Test(input,this);
+        testObject = new Test(input,this);
         mapGenerator.BGGen();
     }
 
@@ -43,8 +44,7 @@ public class Game1 : Game
     protected override void Update(GameTime gameTime)
     {
         input.InputCheck();
-        // TODO: Add your update logic here
-
+        testObject.trackRotation();
         base.Update(gameTime);
     }
 

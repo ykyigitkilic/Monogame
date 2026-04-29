@@ -20,10 +20,14 @@ geliştirmeye açık
     public event EventHandler OnButtonB;
     public event EventHandler OnButtonX;
     public event EventHandler OnButtonY;
-    GamePadState gamPadlast;
+    private GamePadState gamPadlast;
+    public Vector2 LeftStick;
+    public Vector2 RightStick;
     public void InputCheck()
     {
         GamePadState gamePadcurrent = GamePad.GetState(PlayerIndex.One);
+        LeftStick = GamePad.GetState(PlayerIndex.One).ThumbSticks.Left;
+        RightStick = GamePad.GetState(PlayerIndex.One).ThumbSticks.Right;
         if(gamePadcurrent!=gamPadlast)
         {
         if(gamePadcurrent.IsButtonDown(Buttons.DPadUp)) OnDpadUp?.Invoke(this,EventArgs.Empty);
