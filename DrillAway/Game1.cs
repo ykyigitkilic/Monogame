@@ -30,7 +30,8 @@ public class Game1 : Game
         player = new Player(armoDrillo);
         input = new InputManager();
         testObject = new Test(input,this);
-        mapGenerator.BGGen();
+        mapGenerator.BackGroundGen();
+        mapGenerator.MiddelGroundGen();
     }
 
     protected override void LoadContent()

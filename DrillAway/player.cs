@@ -12,9 +12,9 @@ class Player
     public int posX;
     public int posY;
 
-    public void Draw(SpriteBatch sp)
+    public void Draw(SpriteBatch sb)
     {
-        sp.Draw(texture,new Rectangle(
+        sb.Draw(texture,new Rectangle(
             posX,
             posY,
             texture.Bounds.Width/10,
