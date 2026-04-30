@@ -37,16 +37,21 @@ class Test
     }
     public void trackRotation()
     {
+        //player içine kopyalanacak komple
+        //enum ve quarter variable olmadan çalışmaz
+        //CurrentQuarter ve rotatoinCheck olmadan çalışmaz
         var current = CurrentQuarter(input.RightStick);
         if(lastQuarter!=current)
         {
             Console.WriteLine(current);
             if(rotationCheck(current))
             {
+                //dogru yone donuyor burda iste character speed+1 falan yazılacak
                 Console.WriteLine("babag dogru yon devam");
             }
             else
             {
+                //yanlıs yone donuyor character speed-1 falan yazılacak
                 Console.WriteLine("noo");
             }
         }
@@ -54,6 +59,7 @@ class Test
     }
     Quarter CurrentQuarter(Vector2 vector)
     {
+        // koodinat sisteminde hangi kısımda olduğunu buluyor
         if (vector.X >= 0 && vector.Y > 0) return Quarter.Quarter1;
         if (vector.X > 0 && vector.Y <= 0) return Quarter.Quarter4;
         if (vector.X <= 0 && vector.Y < 0) return Quarter.Quarter3;
@@ -62,6 +68,8 @@ class Test
     }
     bool rotationCheck(Quarter current)
     {
+        //koordinat sisteminde dogru yone mi hareket ediyor diye
+        //table of koodinat sistemi yazdım
         return
         (lastQuarter == Quarter.Quarter1 && current == Quarter.Quarter4) ||
         (lastQuarter == Quarter.Quarter4 && current == Quarter.Quarter3) ||
