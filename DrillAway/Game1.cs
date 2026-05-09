@@ -1,5 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
 
 namespace DrillAway;
 
@@ -8,10 +10,12 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private Texture2D armoDrillo;
+    private Texture2D textureAtlas;
     Test testObject;
     Player player;
     InputManager input;
-    MapGenerator mapGenerator = new MapGenerator();
+    MapGenerator mapGenerator;
+    public List<Rectangle> StoredTextures;
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -27,18 +31,26 @@ public class Game1 : Game
         // TODO: Add your initialization logic here
 
         base.Initialize();
-        player = new Player(armoDrillo);
-        input = new InputManager();
-        testObject = new Test(input,this);
+        player = new(armoDrillo);
+        input = new();
+        testObject = new(input,this);
+        mapGenerator = new();
         mapGenerator.BackGroundGen();
         mapGenerator.MiddelGroundGen();
+        mapGenerator.tilemapBG=mapGenerator.loadTileMap("bg.csv");
+        StoredTextures = new(){
+            new Rectangle(0*4,8*4,4,4),
+            new Rectangle(10*4,7*4,4,4),
+            new Rectangle(0*4,14*4,4,4),
+            new Rectangle(10*4,14*4,4,4),
+            };
     }
 
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         armoDrillo = Content.Load<Texture2D>("images/ArmoDrillo");
-
+        textureAtlas = Content.Load<Texture2D>("images/dirt_tileset");
         // TODO: use this.Content to load your game content here
     }
 
@@ -56,11 +68,21 @@ public class Game1 : Game
         // TODO: Add your drawing code here
 
         //for sprite renders always start the batch
-        _spriteBatch.Begin();
+        _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
         // Sectıon 1
+        foreach(var item in mapGenerator.tilemapBG)
+        {
+            Rectangle dest = new(
+                (int)item.Key.X*64,
+                (int)item.Key.Y*64,
+                64,64
+            );
 
-        player.Draw(_spriteBatch);
+            Rectangle src = StoredTextures[item.Value];
+            _spriteBatch.Draw(textureAtlas,dest,src,Color.White);
+
+        }
 
         // Sectıon 2
 

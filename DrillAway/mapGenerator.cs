@@ -1,12 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Net.Mime;
-
+using Microsoft.Xna.Framework;
 
 class MapGenerator
 {
     Random random = new Random();
-
     int tileWidth =100;
     int tileHeight=50;
 
@@ -18,7 +17,7 @@ class MapGenerator
         {
             for(int a =0;a<tileWidth;a++)
             {
-                var num=random.Next(10);
+                var num=random.Next(3);
                 if(a==tileWidth-1)
                 {
                     writer.Write(num);
@@ -61,5 +60,29 @@ class MapGenerator
             writer.WriteLine();
         }
         writer.Close();
+    }
+    public Dictionary<Vector2,int> tilemapBG;
+
+    public Dictionary<Vector2,int> loadTileMap(string filepath)
+    {
+
+        Dictionary<Vector2,int> result = new();
+
+        StreamReader reader = new(filepath);
+        string line;
+        int y=0;
+        while((line = reader.ReadLine())!=null)
+        {
+            string[] items = line.Split(',');
+            for(int x=0;x<items.Length;x++)
+            {
+                if(int.TryParse(items[x],out int value))
+                {
+                    result[new Vector2(x,y)]= value;
+                }
+            }
+            y++;
+        }
+        return result;
     }
 }
