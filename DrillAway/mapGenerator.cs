@@ -17,7 +17,7 @@ class MapGenerator
         {
             for(int a =0;a<tileWidth;a++)
             {
-                var num=random.Next(3);
+                var num=random.Next(6);
                 if(a==tileWidth-1)
                 {
                     writer.Write(num);

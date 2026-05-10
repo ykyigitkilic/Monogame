@@ -39,10 +39,12 @@ public class Game1 : Game
         mapGenerator.MiddelGroundGen();
         mapGenerator.tilemapBG=mapGenerator.loadTileMap("bg.csv");
         StoredTextures = new(){
-            new Rectangle(0*4,8*4,4,4),
-            new Rectangle(10*4,7*4,4,4),
-            new Rectangle(0*4,14*4,4,4),
-            new Rectangle(10*4,14*4,4,4),
+            new Rectangle(9*4,6*4,4,4),
+            new Rectangle(0*4,6*4,4,4),
+            new Rectangle(9*4,13*4,4,4),
+            new Rectangle(0*4,13*4,4,4),
+            new Rectangle(9*4,20*4,4,4),
+            new Rectangle(0*4,20*4,4,4)
             };
     }
 
@@ -74,9 +76,9 @@ public class Game1 : Game
         foreach(var item in mapGenerator.tilemapBG)
         {
             Rectangle dest = new(
-                (int)item.Key.X*64,
-                (int)item.Key.Y*64,
-                64,64
+                (int)item.Key.X*16,
+                (int)item.Key.Y*16,
+                16,16
             );
 
             Rectangle src = StoredTextures[item.Value];
