@@ -6,8 +6,8 @@ using Microsoft.Xna.Framework;
 class MapGenerator
 {
     Random random = new Random();
-    int tileWidth =100;
-    int tileHeight=50;
+    int tileWidth =120;
+    int tileHeight=120;
 
     public void BackGroundGen()
     {
@@ -17,7 +17,7 @@ class MapGenerator
         {
             for(int a =0;a<tileWidth;a++)
             {
-                var num=random.Next(6);
+                var num=random.Next(5);
                 if(a==tileWidth-1)
                 {
                     writer.Write(num);
@@ -35,10 +35,10 @@ class MapGenerator
     public void MiddelGroundGen()
     {
         FastNoiseLite noise = new FastNoiseLite();
-        noise.SetNoiseType(FastNoiseLite.NoiseType.Perlin);
-        noise.SetFrequency(0.1f); //no idea what it does exatcly???
+        noise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
+        noise.SetFrequency(0.06f); //no idea what it does exatcly???
 
-        float threshold = 0.1f;//intensity for generation
+        float threshold = 0.3f;//intensity for generation
         string filepath="mg.csv";
         StreamWriter writer = new StreamWriter(filepath);
         for (int y = 0; y < tileHeight; y++)
@@ -62,6 +62,7 @@ class MapGenerator
         writer.Close();
     }
     public Dictionary<Vector2,int> tilemapBG;
+    public Dictionary<Vector2,int> tilemapMG;
 
     public Dictionary<Vector2,int> loadTileMap(string filepath)
     {
@@ -78,7 +79,7 @@ class MapGenerator
             {
                 if(int.TryParse(items[x],out int value))
                 {
-                    result[new Vector2(x,y)]= value;
+                    result[new Vector2(x,y)]= value;//key value pair oluşturuyor
                 }
             }
             y++;
