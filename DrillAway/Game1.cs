@@ -8,15 +8,12 @@ namespace DrillAway;
 public class Game1 : Game
 {
     private GraphicsDeviceManager _graphics;
-    private SpriteBatch _spriteBatch;
+    private SceneManager sceneManager;
+    private SpriteBatch spriteBatch;
     private Texture2D armoDrillo;
-    private Texture2D textureAtlas;
     Test testObject;
     Player player;
     InputManager input;
-    MapGenerator mapGenerator;
-    public List<Rectangle> StoredTextures;
-    public List<Rectangle> ColonyTextures;
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -25,6 +22,8 @@ public class Game1 : Game
         Window.IsBorderless = false;
         Window.AllowUserResizing = true;
         Window.AllowAltF4 = true;
+        sceneManager = new();
+        input = new();
     }
 
     protected override void Initialize()
@@ -33,34 +32,13 @@ public class Game1 : Game
 
         base.Initialize();
         player = new(armoDrillo);
-        input = new();
         testObject = new(input,this);
-        mapGenerator = new();
-        mapGenerator.BackGroundGen();
-        mapGenerator.MiddelGroundGen();
-        mapGenerator.tilemapBG=mapGenerator.loadTileMap("bg.csv");
-        mapGenerator.tilemapMG=mapGenerator.loadTileMap("mg.csv");
-        StoredTextures = new()
-        {
-            new Rectangle(9*4,6*4,4,4),
-            new Rectangle(0*4,6*4,4,4),
-            new Rectangle(9*4,13*4,4,4),
-            new Rectangle(0*4,13*4,4,4),
-            new Rectangle(9*4,20*4,4,4),
-            new Rectangle(0*4,20*4,4,4)
-        };
-        ColonyTextures = new()
-        {
-            new Rectangle(0*4,0*4,4,4),
-            new Rectangle(9*4,20*4,4,4)
-        };
     }
 
     protected override void LoadContent()
     {
-        _spriteBatch = new SpriteBatch(GraphicsDevice);
-        armoDrillo = Content.Load<Texture2D>("images/ArmoDrillo");
-        textureAtlas = Content.Load<Texture2D>("images/dirt_tileset");
+        spriteBatch = new SpriteBatch(GraphicsDevice);
+        sceneManager.AddScene(new StartScene(Content,spriteBatch,input,sceneManager));
         // TODO: use this.Content to load your game content here
     }
 
@@ -69,47 +47,14 @@ public class Game1 : Game
         input.InputCheck();
         testObject.trackRotation();
         base.Update(gameTime);
+        sceneManager.GetCurrentScene().Update(gameTime);
     }
 
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.CornflowerBlue);
-
+        //GraphicsDevice.Clear(Color.CornflowerBlue);
+        sceneManager.GetCurrentScene().Draw(spriteBatch);
         // TODO: Add your drawing code here
-
-        //for sprite renders always start the batch
-        _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-
-        // Sectıon 1
-        foreach(var item in mapGenerator.tilemapBG)
-        {
-            Rectangle dest = new(
-                (int)item.Key.X*16,
-                (int)item.Key.Y*16,
-                16,16
-            );
-
-            Rectangle src = StoredTextures[item.Value];
-            _spriteBatch.Draw(textureAtlas,dest,src,Color.White);
-
-        }
-
-        // Sectıon 2
-        foreach(var item in mapGenerator.tilemapMG)
-        {
-            Rectangle dest = new(
-                (int)item.Key.X*16,
-                (int)item.Key.Y*16,
-                16,16
-            );
-
-            Rectangle src = ColonyTextures[item.Value];
-            _spriteBatch.Draw(textureAtlas,dest,src,Color.White);
-
-        }
-
-        //after sprites are rendered end the batch
-        _spriteBatch.End();
 
         base.Draw(gameTime);
     }

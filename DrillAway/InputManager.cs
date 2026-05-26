@@ -2,7 +2,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-class InputManager
+public class InputManager
 /*
 amele gibi her defasında update içinde if if if if if diye her boku çevirmek yerine
 bi kere çevirip event olarak yayınlamaya yarıyor
