@@ -6,8 +6,8 @@ using Microsoft.Xna.Framework;
 class MapGenerator
 {
     Random random = new Random();
-    int tileWidth =120;
-    int tileHeight=120;
+    int tileWidth =500;
+    int tileHeight=500;
 
     public void BackGroundGen()
     {

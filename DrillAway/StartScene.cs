@@ -9,11 +9,7 @@ public class StartScene : IScene
     private InputManager input;
     private SpriteBatch spriteBatch;
     private SceneManager sceneManager;
-    private Texture2D armoDrillo;
-    
-    private int posx;
-    private int posy;
-
+    private Texture2D DrillAway;
 
     public StartScene(ContentManager Content,SpriteBatch spriteBatch,InputManager input,SceneManager sceneManager)
     {
@@ -25,18 +21,13 @@ public class StartScene : IScene
     }
     public void Load()
     {
-        armoDrillo = Content.Load<Texture2D>("images/ArmoDrillo");
+        DrillAway = Content.Load<Texture2D>("images/DrillAway");
     }
     public void Draw(SpriteBatch spriteBatch)
     {
         spriteBatch.Begin();
 
-        spriteBatch.Draw(armoDrillo,new Rectangle(
-            posx,
-            posy,
-            armoDrillo.Bounds.Width/10,
-            armoDrillo.Bounds.Width/10),
-            Color.White);
+        spriteBatch.Draw(DrillAway,new Rectangle(0,0,DrillAway.Bounds.Width,DrillAway.Bounds.Height),Color.White);
 
         spriteBatch.End();
     }
@@ -44,11 +35,13 @@ public class StartScene : IScene
     public void Update(GameTime gameTime)
     {
         input.InputCheck();
-        Console.WriteLine("porno");
+        Console.WriteLine("perne");
     }
     
     private void LoadNextScene(object sender,EventArgs e)
     {
+        sceneManager.RemoveScene();
+        input.OnButtonA -= LoadNextScene;
         sceneManager.AddScene(new GamePlayeScene(Content,spriteBatch,input,sceneManager));
     }
 }
