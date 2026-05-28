@@ -17,7 +17,7 @@ public class StartScene : IScene
         this.spriteBatch = spriteBatch;
         this.input = input;
         this.sceneManager = sceneManager;
-        input.OnButtonA += LoadNextScene;
+        this.input.OnButtonA += LoadNextScene;
     }
     public void Load()
     {

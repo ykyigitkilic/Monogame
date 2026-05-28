@@ -64,12 +64,12 @@ public class GamePlayeScene : IScene
     }
 
     public void Draw(SpriteBatch spriteBatch)
-{
-    spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: CameraShift);
-    float viewLeft = player.position.X - (640 / 2) - 80;
-    float viewRight = player.position.X + (640 / 2) + 80;
-    float viewTop = player.position.Y - (360 / 2) - 80;
-    float viewBottom = player.position.Y + (360 / 2) + 80;
+    {
+        spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: CameraShift);
+        float viewLeft = player.position.X - (640 / 2) - 80;
+        float viewRight = player.position.X + (640 / 2) + 80;
+        float viewTop = player.position.Y - (360 / 2) - 80;
+        float viewBottom = player.position.Y + (360 / 2) + 80;
 
     // Section 1: Background
     foreach(var item in mapGenerator.tilemapBG)
