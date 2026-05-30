@@ -6,8 +6,8 @@ using Microsoft.Xna.Framework;
 class MapGenerator
 {
     Random random = new Random();
-    int tileWidth =500;
-    int tileHeight=500;
+    public int tileWidth =4000;
+    public int tileHeight=4000;
 
     public void BackGroundGen()
     {
@@ -17,7 +17,7 @@ class MapGenerator
         {
             for(int a =0;a<tileWidth;a++)
             {
-                var num=random.Next(5);
+                var num=random.Next(2);
                 if(a==tileWidth-1)
                 {
                     writer.Write(num);
@@ -61,25 +61,26 @@ class MapGenerator
         }
         writer.Close();
     }
-    public Dictionary<Vector2,int> tilemapBG;
-    public Dictionary<Vector2,int> tilemapMG;
+    // dictionary yerine 2D array (int[,]) kullanıyoz
+    public int[,] tilemapBG;
+    public int[,] tilemapMG;
 
-    public Dictionary<Vector2,int> loadTileMap(string filepath)
+    public int[,] loadTileMap(string filepath)
     {
-
-        Dictionary<Vector2,int> result = new();
+        int[,] result = new int[tileWidth, tileHeight];
 
         StreamReader reader = new(filepath);
         string line;
-        int y=0;
-        while((line = reader.ReadLine())!=null)
+        int y = 0;
+        
+        while ((line = reader.ReadLine()) != null && y < tileHeight)
         {
             string[] items = line.Split(',');
-            for(int x=0;x<items.Length;x++)
+            for (int x = 0; x < items.Length && x < tileWidth; x++)
             {
-                if(int.TryParse(items[x],out int value))
+                if (int.TryParse(items[x], out int value))
                 {
-                    result[new Vector2(x,y)]= value;//key value pair oluşturuyor
+                    result[x, y] = value; 
                 }
             }
             y++;

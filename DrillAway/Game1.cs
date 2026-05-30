@@ -11,7 +11,6 @@ public class Game1 : Game
     private SpriteBatch spriteBatch;
     InputManager input;
     private RenderTarget2D renderTarget;
-
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -23,7 +22,7 @@ public class Game1 : Game
         
         _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
         _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-        _graphics.IsFullScreen = true;
+        _graphics.IsFullScreen = false;
         _graphics.HardwareModeSwitch = false;
         _graphics.ApplyChanges();
         
@@ -43,7 +42,8 @@ public class Game1 : Game
         
         renderTarget = new RenderTarget2D(GraphicsDevice, 640, 360);
         
-        sceneManager.AddScene(new StartScene(Content,spriteBatch,input,sceneManager));
+        sceneManager.AddScene(new StartScene(Content,spriteBatch,input,sceneManager,this));
+        
         // TODO: use this.Content to load your game content here
     }
 

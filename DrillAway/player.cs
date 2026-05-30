@@ -4,19 +4,22 @@ using Microsoft.Xna.Framework.Graphics;
 
 class Player
 {
-    public Player(Texture2D asset,InputManager input)
+    public Player(Texture2D asset,InputManager input,Game game1)
     {
         texture = asset;
         this.input=input;
         position = new Vector2(320,180);
         speed = 0f;
+        this.game1=game1;
+        input.OnButtonB += ExitGame;
     }
+
     public Texture2D texture;
     public Vector2 position;
     private float rotation;
     private InputManager input;
     private float speed;
-    private float velocity;
+    private Game game1;
     Quarter lastQuarter;
     enum Quarter
     {
@@ -39,7 +42,7 @@ class Player
             origin: origin,
             scale: 0.01f,
             effects: SpriteEffects.None,
-            layerDepth: 0f
+            layerDepth: 0.99f
             );
     }
 
@@ -105,5 +108,10 @@ class Player
         (lastQuarter == Quarter.Quarter4 && current == Quarter.Quarter3) ||
         (lastQuarter == Quarter.Quarter3 && current == Quarter.Quarter2) ||
         (lastQuarter == Quarter.Quarter2 && current == Quarter.Quarter1);
+    }
+
+    private void ExitGame(object sender,EventArgs e)
+    {
+        game1.Exit();
     }
 }
