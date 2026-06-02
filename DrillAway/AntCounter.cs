@@ -19,6 +19,7 @@ public class AntCounter
 
     public void Draw()
     {
+        var killcount=Convert.ToString(antManager.AntsKilled);
         spriteBatch.Draw(
         texture: texture2D,
         position: new Vector2(578,30),
@@ -30,6 +31,6 @@ public class AntCounter
             effects: SpriteEffects.None,
         layerDepth: 1
         );
-        spriteBatch.DrawString(spriteFont,Convert.ToString(antManager.AntsKilled),new Vector2(578,30),Color.Black);
+        spriteBatch.DrawString(spriteFont,killcount+"/10",new Vector2(578,30),Color.Black);
     }
 }

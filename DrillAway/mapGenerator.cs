@@ -36,7 +36,7 @@ class MapGenerator
     {
         FastNoiseLite noise = new FastNoiseLite();
         noise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
-        noise.SetFrequency(0.06f); //no idea what it does exatcly???
+        noise.SetFrequency(0.06f);
 
         float threshold = 0.3f;//intensity for generation
         string filepath="mg.csv";

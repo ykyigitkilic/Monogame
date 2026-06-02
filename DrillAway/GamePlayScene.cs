@@ -54,31 +54,39 @@ public class GamePlayeScene : IScene
 
         ColonyTextures = new()
         {
-            new Rectangle(0*16,0*16,16,16),  // Index 0 (Empty/Water)
+            new Rectangle(0*16,0*16,16,16),  // Index 0 (Empty)
             new Rectangle(1*16,0*16,16,16), // Index 1 (Land)
-            new Rectangle(2*16,0*16,16,16)  // Index 2 (THE ANT - Change these numbers to whatever fits your spritesheet)
+            new Rectangle(2*16,0*16,16,16)  // Index 2 (ANT)
         };
 
         
     }
 
     private void MatrixCalculation(GameTime gameTime)
-    {
-        float targetX = (640 / 2f) - player.position.X;
-        float targetY = (360 / 2f) - player.position.Y;
-        Vector2 targetPosition = new Vector2(targetX, targetY);
+{
+    float screenWidth = 640f;
+    float screenHeight = 360f;
+    float tileSize = 16f;
 
-        float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+    float mapWidthInPixels = mapGenerator.tileWidth * tileSize;
+    float mapHeightInPixels = mapGenerator.tileHeight * tileSize;
 
-        cameraPosition.X = MathHelper.Lerp(cameraPosition.X, targetPosition.X, cameraLagSpeed * deltaTime);
-        cameraPosition.Y = MathHelper.Lerp(cameraPosition.Y, targetPosition.Y, cameraLagSpeed * deltaTime);
+    float targetX = (screenWidth / 2f) - player.position.X;
+    float targetY = (screenHeight / 2f) - player.position.Y;
 
-        CameraShift = Matrix.CreateTranslation(cameraPosition.X, cameraPosition.Y, 0);
-    }
+    targetX = MathHelper.Clamp(targetX, -(mapWidthInPixels - screenWidth), 0);
+    targetY = MathHelper.Clamp(targetY, -(mapHeightInPixels - screenHeight), 0);
+
+    float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+    cameraPosition.X = MathHelper.Lerp(cameraPosition.X, targetX, cameraLagSpeed * deltaTime);
+    cameraPosition.Y = MathHelper.Lerp(cameraPosition.Y, targetY, cameraLagSpeed * deltaTime);
+
+    CameraShift = Matrix.CreateTranslation(cameraPosition.X, cameraPosition.Y, 0);
+}
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        // 1. WORLD SPACE: Draw everything affected by the camera
         spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: CameraShift);
         
         float viewLeft = player.position.X - (640 / 2) - 120;
@@ -86,13 +94,12 @@ public class GamePlayeScene : IScene
         float viewTop = player.position.Y - (360 / 2) - 120;
         float viewBottom = player.position.Y + (360 / 2) + 120;
 
-        // Kameranın gördüğü alanı 16x16'lık grid koordinatlarına çeviriyoruz
         int minTileX = (int)Math.Floor(viewLeft / 16);
         int maxTileX = (int)Math.Ceiling(viewRight / 16);
         int minTileY = (int)Math.Floor(viewTop / 16);
         int maxTileY = (int)Math.Ceiling(viewBottom / 16);
 
-        // Section 1: Background
+        //Background
         for (int y = minTileY; y <= maxTileY; y++)
         {
             for (int x = minTileX; x <= maxTileX; x++)
@@ -108,7 +115,7 @@ public class GamePlayeScene : IScene
             }
         }
 
-        // Section 2: Middleground
+        //Middleground
         
         for (int y = minTileY; y <= maxTileY; y++)
         {
@@ -129,9 +136,10 @@ public class GamePlayeScene : IScene
 
         player.Draw(spriteBatch);
         
-        // End the world drawing batch
         spriteBatch.End();
 
+
+        //HUD
         spriteBatch.Begin(samplerState: SamplerState.PointClamp);
         
         timer.Draw();
@@ -141,35 +149,39 @@ public class GamePlayeScene : IScene
     }
 
     public void Update(GameTime gameTime)
-    {
-        input.InputCheck();
-        player.Update();
-        timer.Update(gameTime);
+{
+    input.InputCheck();
+    player.Update();
 
-        // 1. Convert the Player's exact world pixel center into Grid Coordinates (divide by 16)
-        int playerGridX = (int)Math.Floor(player.position.X / 16);
-        int playerGridY = (int)Math.Floor(player.position.Y / 16);
+    float tileSize = 16f;
+    float playerWidth = 16f;
+    float playerHeight = 16f;
 
-        // 2. Check if an ant is occupying the exact tile the player is standing on
-        // (Using the KillAntAt method from your AntManager)
-        antManager.KillAntAt(
-            playerGridX, 
-            playerGridY, 
-            mapGenerator.tilemapMG, 
-            mapGenerator.tileWidth, 
-            mapGenerator.tileHeight
-        );
+    player.position.X = MathHelper.Clamp(player.position.X, 0, (mapGenerator.tileWidth * tileSize) - playerWidth);
+    player.position.Y = MathHelper.Clamp(player.position.Y, 0, (mapGenerator.tileHeight * tileSize) - playerHeight);
 
-        // 3. Process ant movement for the remaining ants
-        antManager.antMove(
-            gameTime,
-            mapGenerator.tilemapMG,
-            mapGenerator.tileWidth,
-            mapGenerator.tileHeight
-        );
+    timer.Update(gameTime);
 
-        MatrixCalculation(gameTime);
-    }
+    int playerGridX = (int)Math.Floor(player.position.X / 16);
+    int playerGridY = (int)Math.Floor(player.position.Y / 16);
+
+    antManager.KillAntAt(
+        playerGridX, 
+        playerGridY, 
+        mapGenerator.tilemapMG, 
+        mapGenerator.tileWidth, 
+        mapGenerator.tileHeight
+    );
+
+    antManager.antMove(
+        gameTime,
+        mapGenerator.tilemapMG,
+        mapGenerator.tileWidth,
+        mapGenerator.tileHeight
+    );
+
+    MatrixCalculation(gameTime);
+}
     public void Load()
     {
         textureAtlas = Content.Load<Texture2D>("images/mainAtlas");
@@ -187,13 +199,10 @@ public class GamePlayeScene : IScene
         timer.repeat=false;
         timer.OnTimerEnd+=LoadNextScene;
         antCounter = new(spriteBatch,timerTexture,font,antManager);
-        // Load as a Song instead of SoundEffect
         NMKG = Content.Load<Song>("NMKG"); 
         
-        // Songs must be played through the MediaPlayer
         MediaPlayer.Play(NMKG); 
-        
-        // Optional: Loop the music
+
         MediaPlayer.IsRepeating = true; 
     }
 
